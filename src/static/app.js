@@ -472,6 +472,27 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Function to create share URLs for social platforms
+  function createShareUrls(activityName, description, schedule) {
+    const currentUrl = window.location.href;
+    // Truncate description if it's too long (Twitter has 280 char limit)
+    const maxDescLength = 100;
+    const truncatedDesc = description.length > maxDescLength 
+      ? description.substring(0, maxDescLength) + '...' 
+      : description;
+    
+    const shareText = `Check out ${activityName} at Mergington High School! ${truncatedDesc} Schedule: ${schedule}`;
+    const encodedText = encodeURIComponent(shareText);
+    const encodedUrl = encodeURIComponent(currentUrl);
+    const encodedActivity = encodeURIComponent(activityName);
+
+    return {
+      twitter: `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+    };
+  }
+
   // Function to render a single activity card
   function renderActivityCard(name, details) {
     const activityCard = document.createElement("div");
@@ -498,6 +519,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Format the schedule using the new helper function
     const formattedSchedule = formatSchedule(details);
+
+    // Create share URLs
+    const shareUrls = createShareUrls(name, details.description, formattedSchedule);
 
     // Create activity tag
     const tagHtml = `
@@ -551,6 +575,20 @@ document.addEventListener("DOMContentLoaded", () => {
             )
             .join("")}
         </ul>
+      </div>
+      <div class="share-section">
+        <span class="share-label">Share this activity:</span>
+        <div class="share-buttons">
+          <a href="${shareUrls.twitter}" target="_blank" rel="noopener noreferrer" class="share-button share-twitter" aria-label="Share on Twitter">
+            <span class="share-icon" aria-hidden="true">X</span>
+          </a>
+          <a href="${shareUrls.facebook}" target="_blank" rel="noopener noreferrer" class="share-button share-facebook" aria-label="Share on Facebook">
+            <span class="share-icon" aria-hidden="true">f</span>
+          </a>
+          <a href="${shareUrls.linkedin}" target="_blank" rel="noopener noreferrer" class="share-button share-linkedin" aria-label="Share on LinkedIn">
+            <span class="share-icon" aria-hidden="true">in</span>
+          </a>
+        </div>
       </div>
       <div class="activity-card-actions">
         ${
