@@ -475,7 +475,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to create share URLs for social platforms
   function createShareUrls(activityName, description, schedule) {
     const currentUrl = window.location.href;
-    const shareText = `Check out ${activityName} at Mergington High School! ${description} Schedule: ${schedule}`;
+    // Truncate description if it's too long (Twitter has 280 char limit)
+    const maxDescLength = 100;
+    const truncatedDesc = description.length > maxDescLength 
+      ? description.substring(0, maxDescLength) + '...' 
+      : description;
+    
+    const shareText = `Check out ${activityName} at Mergington High School! ${truncatedDesc} Schedule: ${schedule}`;
     const encodedText = encodeURIComponent(shareText);
     const encodedUrl = encodeURIComponent(currentUrl);
     const encodedActivity = encodeURIComponent(activityName);
@@ -574,13 +580,13 @@ document.addEventListener("DOMContentLoaded", () => {
         <span class="share-label">Share this activity:</span>
         <div class="share-buttons">
           <a href="${shareUrls.twitter}" target="_blank" rel="noopener noreferrer" class="share-button share-twitter" aria-label="Share on Twitter">
-            <span class="share-icon">𝕏</span>
+            <span class="share-icon" aria-hidden="true">X</span>
           </a>
           <a href="${shareUrls.facebook}" target="_blank" rel="noopener noreferrer" class="share-button share-facebook" aria-label="Share on Facebook">
-            <span class="share-icon">f</span>
+            <span class="share-icon" aria-hidden="true">f</span>
           </a>
           <a href="${shareUrls.linkedin}" target="_blank" rel="noopener noreferrer" class="share-button share-linkedin" aria-label="Share on LinkedIn">
-            <span class="share-icon">in</span>
+            <span class="share-icon" aria-hidden="true">in</span>
           </a>
         </div>
       </div>
