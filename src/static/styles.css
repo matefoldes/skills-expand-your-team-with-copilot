@@ -727,3 +727,18 @@ footer {
 header #user-controls {
   right: 65px;
 }
+
+/* Responsive adjustments for dark mode toggle and user controls */
+@media (max-width: 767px) {
+  #dark-mode-toggle {
+    top: 8px;
+    right: 10px;
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+
+  header #user-controls {
+    right: 55px;
+  }
+}
